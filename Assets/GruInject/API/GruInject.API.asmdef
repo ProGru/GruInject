@@ -1,0 +1,4 @@
+{
+  "name": "GruInject.API",
+  "references":[ "GUID:dfc648cdedd040069eebd9ac52c536dd", "GUID:b7474ac4b8b14725b4fe6fb3afb6ed03" ]
+}

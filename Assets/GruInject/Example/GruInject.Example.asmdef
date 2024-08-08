@@ -1,0 +1,7 @@
+﻿{
+  "name": "GruInject.Example",
+  "references":[ 
+    "GUID:3c8f9c42a90f46ba91de5f5345ee4ee6",
+    "GUID:b7474ac4b8b14725b4fe6fb3afb6ed03" 
+  ]
+}

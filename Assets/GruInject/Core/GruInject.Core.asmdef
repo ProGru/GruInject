@@ -1,0 +1,17 @@
+{
+    "name": "GruInject.Core",
+    "rootNamespace": "",
+    "references": [
+        "GUID:bd485380bd464d8d823509a903d948aa",
+        "GUID:b7474ac4b8b14725b4fe6fb3afb6ed03"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
