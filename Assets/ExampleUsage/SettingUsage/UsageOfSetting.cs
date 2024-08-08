@@ -1,11 +1,10 @@
 ﻿using ExampleUsage.Settings.Interface;
-using GruInject.API;
 using GruInject.API.Attributes;
 using UnityEngine;
 
 namespace ExampleUsage.SettingUsage
 {
-    public class UsageOfSetting  : GruMonoBehaviour
+    public class UsageOfSetting  : GruMonoBehaviourEditMode
     {
         [Inject] private ISoundSettings _soundSettings;
 

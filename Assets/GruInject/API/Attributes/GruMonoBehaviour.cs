@@ -5,11 +5,15 @@ namespace GruInject.API
 {
     public class GruMonoBehaviour : MonoBehaviour
     {
-        private bool wasInitialized = false;
-        private void Awake()
+        private bool _wasInitialized = false;
+        
+        public void Awake()
         {
-            if (!wasInitialized)
+            if (!_wasInitialized)
+            {
+                _wasInitialized = true;
                 InstanceInitializator.CurrentInstanceInitializator.InitializeGruInstance(this);
+            }
         }
     }
 }
