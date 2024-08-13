@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using GruInject.API.Attributes;
 using GruInject.Core.Injection;
-using GruInject.Tests.Ctor;
+using GruInject.Tests.InjectAttributesForTests;
+using GruInject.Tests.SupportClasses;
+using GruInject.Tests.SupportClasses.Ctor;
+using GruInject.Tests.SupportClasses.TestAttributes;
 using NUnit.Framework;
 
 namespace GruInject.Tests.InjectionTests
@@ -130,7 +132,7 @@ namespace GruInject.Tests.InjectionTests
         [Test]
         public void When_CreatingInstanceWithAttributeOnMethod_Then_MethodIsCalledAndAllParametersAreInjected()
         {
-            ServiceLocator serviceLocator = new(new List<Type>() {typeof(InjectAttribute)},false, false);
+            ServiceLocator serviceLocator = new(new List<Type>() {typeof(TestInjectAttribute)},false, false);
             var requestedInstance = serviceLocator.GetInstance<ClassWithAttributeOnMethods>();
             serviceLocator.GetInstance<ClassWithAttributeOnMethods>();
             
@@ -154,7 +156,7 @@ namespace GruInject.Tests.InjectionTests
         [Test]
         public void When_CreatingInstanceWithAttributeOnCtor_Then_CtorIsCalledAndAllParametersAreInjectedWhenInitialized()
         {
-            ServiceLocator serviceLocator = new(new List<Type>() {typeof(InjectAttribute)},false, false);
+            ServiceLocator serviceLocator = new(new List<Type>() {typeof(TestInjectAttribute)},false, false);
             var requestedInstance = serviceLocator.GetInstance<ClassWithInjectedCtor>();
 
             Assert.IsTrue(requestedInstance.wasInjectedClassInitializedDurningCotor);
@@ -167,7 +169,7 @@ namespace GruInject.Tests.InjectionTests
         [Test]
         public void When_CreatingInstanceWithAttributeOnMethod_Then_MethodIsCalledAndAllParametersAreInjectedWhenInitialized()
         {
-            ServiceLocator serviceLocator = new(new List<Type>() {typeof(InjectAttribute)},false, false);
+            ServiceLocator serviceLocator = new(new List<Type>() {typeof(TestInjectAttribute)},false, false);
             var requestedInstance = serviceLocator.GetInstance<ClassWithAttributeOnMethods>();
 
             Assert.IsTrue(requestedInstance._classWithInjectedCtor != null);

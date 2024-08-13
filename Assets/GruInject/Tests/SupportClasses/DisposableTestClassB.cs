@@ -1,7 +1,7 @@
 ﻿using System;
 using GruInject.API.Attributes;
 
-namespace GruInject.Tests
+namespace GruInject.Tests.SupportClasses
 {
     [RegisterAsSingleInstance]
     public class DisposableTestClassB : IDisposable

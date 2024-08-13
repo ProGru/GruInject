@@ -1,5 +1,4 @@
-﻿
-namespace GruInject.Tests.CircularDependency
+﻿namespace GruInject.Tests.SupportClasses.CircularDependency
 {
     public class CircularDependencyInCtorA
     {

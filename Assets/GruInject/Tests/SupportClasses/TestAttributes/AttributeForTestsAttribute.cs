@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace GruInject.Tests
+namespace GruInject.Tests.SupportClasses.TestAttributes
 {
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct)]
     public class AttributeForTestsAttribute : Attribute

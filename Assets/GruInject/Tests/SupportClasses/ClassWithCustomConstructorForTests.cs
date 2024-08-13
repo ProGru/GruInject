@@ -1,4 +1,4 @@
-﻿namespace GruInject.Tests
+﻿namespace GruInject.Tests.SupportClasses
 {
     public class ClassWithCustomConstructorForTests
     {

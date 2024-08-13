@@ -1,6 +1,7 @@
 ﻿using GruInject.Core.Injection;
-using GruInject.Tests.CircularDependency;
-using GruInject.Tests.CircularDependency.CircularFreeClasses;
+using GruInject.Tests.SupportClasses.CircularDependency;
+using GruInject.Tests.SupportClasses.CircularDependency.CircularFreeClasses;
+using GruInject.Tests.SupportClasses.TestAttributes;
 using NUnit.Framework;
 
 namespace GruInject.Tests.InjectionTests

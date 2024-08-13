@@ -1,6 +1,6 @@
 ﻿using GruInject.API.Attributes;
 
-namespace GruInject.Tests
+namespace GruInject.Tests.SupportClasses
 {
     [RegisterAsSingleInstance]
     public class TestClassA

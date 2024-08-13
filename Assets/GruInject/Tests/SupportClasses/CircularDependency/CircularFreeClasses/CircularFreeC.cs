@@ -1,4 +1,6 @@
-﻿namespace GruInject.Tests.CircularDependency.CircularFreeClasses
+﻿using GruInject.Tests.SupportClasses.TestAttributes;
+
+namespace GruInject.Tests.SupportClasses.CircularDependency.CircularFreeClasses
 {
     public class CircularFreeC
     {

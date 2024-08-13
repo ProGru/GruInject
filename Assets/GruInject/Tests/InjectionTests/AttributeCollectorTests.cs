@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Linq;
 using System.Reflection;
-using GruInject.API.Attributes;
 using GruInject.Core.Injection;
+using GruInject.Tests.InjectAttributesForTests;
+using GruInject.Tests.SupportClasses;
+using GruInject.Tests.SupportClasses.TestAttributes;
 using NUnit.Framework;
 
 namespace GruInject.Tests.InjectionTests
@@ -61,7 +63,7 @@ namespace GruInject.Tests.InjectionTests
         public void WhenRequestingMethodAttributesForType_Then_AllMethodsWithAttributeForThisTypeAreReturned()
         {
             AttributeCollector attributeCollector = new();
-            var result = attributeCollector.GetMethods(typeof(InjectAttribute), typeof(ClassWithAttributeOnMethods));
+            var result = attributeCollector.GetMethods(typeof(TestInjectAttribute), typeof(ClassWithAttributeOnMethods));
 
             Assert.True(result.Find(x =>x.Name == "NoParameterMethod") != null);
             Assert.True(result.Find(x =>x.Name == "ParameterMethod") != null);
@@ -75,7 +77,7 @@ namespace GruInject.Tests.InjectionTests
         public void WhenRequestingMethodWithAttributesOnParamsForType_Then_AllMethodsWithAttributeForThisTypeAreReturned()
         {
             AttributeCollector attributeCollector = new();
-            var result = attributeCollector.GetMethodsWithAttributeOnParam(typeof(InjectAttribute), typeof(ClassWithAttributeOnMethods));
+            var result = attributeCollector.GetMethodsWithAttributeOnParam(typeof(TestInjectAttribute), typeof(ClassWithAttributeOnMethods));
 
             Assert.False(result.Find(x =>x.Name == "NoParameterMethod") != null);
             Assert.False(result.Find(x =>x.Name == "ParameterMethod") != null);
@@ -87,6 +89,5 @@ namespace GruInject.Tests.InjectionTests
             Assert.True(result.Find(x =>x.Name == "NoAttributeMethodWithInjectParam") != null);
             Assert.True(result.Find(x =>x.Name == "NoAttributeMethodWithInjectOnSecondParam") != null);
         }
-        
     }
 }

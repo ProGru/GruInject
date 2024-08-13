@@ -1,14 +1,13 @@
-﻿using GruInject.API.Attributes;
-using NUnit.Framework.Constraints;
+﻿using GruInject.Tests.InjectAttributesForTests;
 
-namespace GruInject.Tests.Ctor
+namespace GruInject.Tests.SupportClasses.Ctor
 {
     public class ClassWithInjectedCtor
     {
         public ClassWithInjectedCtor2 _withInjectedCtor2;
         public bool wasInjectedClassInitializedDurningCotor = false;
 
-        [Inject]
+        [TestInject]
         public ClassWithInjectedCtor(ClassWithInjectedCtor2 withInjectedCtor2)
         {
             _withInjectedCtor2 = withInjectedCtor2;

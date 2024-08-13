@@ -1,4 +1,6 @@
-﻿namespace GruInject.Tests
+﻿using GruInject.Tests.SupportClasses.TestAttributes;
+
+namespace GruInject.Tests.SupportClasses
 {
     public class ClassWithAttributeOnField
     {

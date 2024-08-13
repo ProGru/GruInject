@@ -1,7 +1,6 @@
-﻿using GruInject.API.Attributes;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace GruInject.API
+namespace GruInject.API.Attributes
 {
     public class GruMonoBehaviour : MonoBehaviour
     {

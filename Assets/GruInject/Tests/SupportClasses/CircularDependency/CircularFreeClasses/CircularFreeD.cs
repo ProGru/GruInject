@@ -1,4 +1,4 @@
-﻿namespace GruInject.Tests.CircularDependency.CircularFreeClasses
+﻿namespace GruInject.Tests.SupportClasses.CircularDependency.CircularFreeClasses
 {
     public class CircularFreeD
     {

@@ -1,7 +1,8 @@
 ﻿using GruInject.API.Attributes;
-using GruInject.Tests.Ctor;
+using GruInject.Tests.InjectAttributesForTests;
+using GruInject.Tests.SupportClasses.Ctor;
 
-namespace GruInject.Tests
+namespace GruInject.Tests.SupportClasses
 {
     [RegisterAsSingleInstance]
     public class ClassWithAttributeOnMethods
@@ -22,26 +23,26 @@ namespace GruInject.Tests
         public ClassWithInjectedCtor _classWithInjectedCtor;
         public bool wasInjectedDurningMethodCall = false;
 
-        [Inject]
+        [TestInject]
         public ClassWithAttributeOnMethods()
         {
             CtorCallsCount++;
         }
         
-        [Inject]
+        [TestInject]
         public void NoParameterMethod()
         {
             NoParameterMethodWasCalled++;
         }
 
-        [Inject]
+        [TestInject]
         public void ParameterMethod(ClassWithAttribute value)
         {
             ParameterMethodWasCalled++;
             ParameterMethodValue = value;
         }
 
-        [Inject]
+        [TestInject]
         public ClassWithAttribute ParameterMethodWithReturn(ClassWithAttribute value)
         {
             ParameterMethodWithReturnWasCalled++;
@@ -49,13 +50,13 @@ namespace GruInject.Tests
             return value;
         }
 
-        [Inject]
+        [TestInject]
         private void PrivateMethod()
         {
             PrivateMethodWasCalled++;
         }
 
-        [Inject]
+        [TestInject]
         private void ParameterMethodWithClass(ClassWithInjectedCtor classWithInjectedCtor)
         {
             _classWithInjectedCtor = classWithInjectedCtor;
@@ -67,13 +68,13 @@ namespace GruInject.Tests
             NoAttributeMethodWasCalled++;
         }
 
-        public void NoAttributeMethodWithInjectParam([Inject] ClassWithAttribute value)
+        public void NoAttributeMethodWithInjectParam([TestInject] ClassWithAttribute value)
         {
             NoAttributeMethodWithInjectParamWasCalled++;
             NoAttributeMethodWithInjectParamValue = value;
         }
         
-        public void NoAttributeMethodWithInjectOnSecondParam(ClassWithAttribute value1, [Inject] ClassWithAttribute value2)
+        public void NoAttributeMethodWithInjectOnSecondParam(ClassWithAttribute value1, [TestInject] ClassWithAttribute value2)
         {
             NoAttributeMethodWithInjectOnSecondParamWasCalled++;
             NoAttributeMethodWithInjectOnSecondParamValue1 = value1;

@@ -1,6 +1,6 @@
 ﻿using GruInject.API.Attributes;
 
-namespace GruInject.Tests.Ctor
+namespace GruInject.Tests.SupportClasses.Ctor
 {
     [AutoSpawn]
     public class NormalRegisteredClassWithProperty

@@ -1,6 +1,7 @@
 ﻿using GruInject.API.Attributes;
+using GruInject.Tests.SupportClasses.TestAttributes;
 
-namespace GruInject.Tests.MultiLayerInjectionClass
+namespace GruInject.Tests.SupportClasses.MultiLayerInjectionClass
 {
     [RegisterInstance]
     public class TestClassLayer2
