@@ -43,8 +43,6 @@ namespace GruInject.Core.Registration
                 }
             }
             _instanceCreator = new InstanceCreator(_instanceContainer, instanceFiller);
-
-            //ToDo: There can be also factory if user want to define its own creation method.
         }
         
         public object Get(Type type)

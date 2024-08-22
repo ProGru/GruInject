@@ -7,8 +7,8 @@ namespace GruInject.API
 {
     public class GruInject
     {
-        private List<Type> _autoSpawnAttributes;
-        private List<Type> _injectAttribute;
+        private readonly List<Type> _autoSpawnAttributes;
+        private readonly List<Type> _injectAttribute;
 
         private ServiceLocator _serviceLocator;
 
@@ -26,7 +26,7 @@ namespace GruInject.API
             }
 
             _serviceLocator = new ServiceLocator(_injectAttribute, enableCircularDependencyDetection, allowOnlyRegisteredInstances, GruInjStatic.ServiceLocator);
-            InstanceInitializator.CurrentInstanceInitializator = _serviceLocator;
+            InstanceInitialization.CurrentInstanceInitialization = _serviceLocator;
 
             AttributeCollector attributeCollector = new AttributeCollector();
             foreach (var attributeToSpawn in _autoSpawnAttributes)

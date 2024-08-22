@@ -2,14 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using GruInject.Core.Registration;
 
 namespace GruInject.Core.Injection
 {
     public class InstanceFiller : IDisposable
     {
-        private AttributeCollector _attributeCollector = new();
-        private List<Type> _injectAttributes;
+        private readonly AttributeCollector _attributeCollector = new();
+        private readonly List<Type> _injectAttributes;
 
         public InstanceFiller(List<Type> injectAttributes)
         {

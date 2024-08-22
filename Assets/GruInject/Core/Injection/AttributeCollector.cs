@@ -57,26 +57,6 @@ namespace GruInject.Core.Injection
             return infos;
         }
 
-        public List<FieldInfo> GetFields(Type attribute)
-        {
-            List<FieldInfo> fieldInfos = new();
-            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
-            {
-                foreach (var type in assembly.GetTypes())
-                {
-                    foreach (var field in type.GetFields(BindingFlags.Public| BindingFlags.NonPublic))
-                    {
-                        if (field.IsDefined(attribute,false))
-                        {
-                            fieldInfos.Add(field);
-                        }
-                    }
-                }
-            }
-
-            return fieldInfos;
-        }
-
         public List<FieldInfo> GetFields(Type attribute,Type type) 
         {
             List<FieldInfo> fieldInfos = new();

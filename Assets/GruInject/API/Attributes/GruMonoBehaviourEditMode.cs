@@ -7,7 +7,7 @@ namespace GruInject.API.Attributes
     {
         private new void Awake()
         {
-            if (InstanceInitializator.CurrentInstanceInitializator != null)
+            if (InstanceInitialization.CurrentInstanceInitialization != null)
             {
                 base.Awake();
             }

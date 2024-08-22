@@ -23,22 +23,21 @@ namespace GruInject.Core.Registration
             _instanceFiller.InitializeInstanceCtor(type, createdInstance, CreateInstance);
             _instanceFiller.InitializeMethods(createdInstance, CreateInstance);
 
-            //ToDO: Should it be added to container when its not single or shared?
             if (_instanceContainer.InitializedInstances.TryGetValue(type, out List<object> litOfInstances))
             {
                 litOfInstances.Add(createdInstance);
             }
             else
             {
-                foreach (var assosiacetInterface in type.GetInterfaces())
+                foreach (var associatedInterface in type.GetInterfaces())
                 {
-                    if (assosiacetInterface != typeof(IDisposable))
+                    if (associatedInterface != typeof(IDisposable))
                     {
-                        if (_instanceContainer.InitializedInstances.TryGetValue(assosiacetInterface, out List<object> listOfInterfaceInstances))
-                            listOfInterfaceInstances.Add(assosiacetInterface);
+                        if (_instanceContainer.InitializedInstances.TryGetValue(associatedInterface, out List<object> listOfInterfaceInstances))
+                            listOfInterfaceInstances.Add(associatedInterface);
                         else
                         {
-                            _instanceContainer.InitializedInstances.Add(assosiacetInterface,new List<object>() {createdInstance});
+                            _instanceContainer.InitializedInstances.Add(associatedInterface,new List<object>() {createdInstance});
 
                         }
                     }

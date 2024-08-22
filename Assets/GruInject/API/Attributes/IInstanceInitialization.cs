@@ -1,6 +1,6 @@
 ﻿namespace GruInject.API.Attributes
 {
-    public interface IInstanceInitializator
+    public interface IInstanceInitialization
     {
         void InitializeGruInstance(GruMonoBehaviour gruMonoBehaviour);
     }

@@ -11,7 +11,7 @@ namespace GruInject.API.Attributes
             if (!_wasInitialized)
             {
                 _wasInitialized = true;
-                InstanceInitializator.CurrentInstanceInitializator.InitializeGruInstance(this);
+                InstanceInitialization.CurrentInstanceInitialization.InitializeGruInstance(this);
             }
         }
     }

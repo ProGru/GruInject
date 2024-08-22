@@ -1,19 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using GruInject.API;
 using GruInject.API.Attributes;
 using GruInject.Core.Registration;
 
 namespace GruInject.Core.Injection
 {
-    public class ServiceLocator : IDisposable, IInstanceInitializator
+    public class ServiceLocator : IDisposable, IInstanceInitialization
     {
         private readonly InstanceProvider _instanceProvider;
         private readonly InstanceFiller _instanceFiller;
-        private bool _enableCircularDependencyDetection;
-        private CircularDependencyDetection _circularDependencyDetection;
-        private List<Type> _injectAttributes;
-        private ServiceLocator _parentServiceLocator;
+        private readonly bool _enableCircularDependencyDetection;
+        private readonly CircularDependencyDetection _circularDependencyDetection;
+        private readonly List<Type> _injectAttributes;
+        private readonly ServiceLocator _parentServiceLocator;
         private ServiceLocator _childServiceLocator;
 
         public ServiceLocator(List<Type> injectAttributes, bool enableCircularDependencyDetection, bool allowOnlyRegisteredInstances, ServiceLocator parentServiceLocator = null)
@@ -36,7 +35,7 @@ namespace GruInject.Core.Injection
         {
             if (_parentServiceLocator != null)
             {
-                  var instance = _parentServiceLocator._instanceProvider.CheckInstanceAvailability(type); //ToDo test for multiple Service locators
+                  var instance = _parentServiceLocator._instanceProvider.CheckInstanceAvailability(type);
                   if (instance != null) return instance;
             }
             

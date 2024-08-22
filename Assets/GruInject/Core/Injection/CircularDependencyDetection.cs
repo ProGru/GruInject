@@ -6,8 +6,8 @@ namespace GruInject.Core.Injection
 {
     public class CircularDependencyDetection
     {
-        private AttributeCollector _attributeCollector = new();
-        private List<Type> _alreadyCheckedTypes = new();
+        private readonly AttributeCollector _attributeCollector = new();
+        private readonly List<Type> _alreadyCheckedTypes = new();
 
         public List<Type> FindCircularDependency(Type attribute ,Type type)
         {
