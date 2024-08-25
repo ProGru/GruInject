@@ -1,0 +1,4 @@
+﻿{
+  "name": "GruInject.Example.SettingsService.Service",
+  "references":[ "GUID:573f6dcc27314dcaaa930c7c029d23e5", "GUID:b7474ac4b8b14725b4fe6fb3afb6ed03", "GUID:68f088acf47d4be7bb73839a7f4365b7" ]
+}
