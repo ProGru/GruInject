@@ -27,11 +27,9 @@ namespace GruInject.GruInject.API.TestTools
                     _container, 
                     typeof(RegisterAsSingleInstanceAttribute), 
                     typeof(RegisterInstanceAttribute)));
-            
-            _serviceLocator = new ServiceLocator(
-                new List<Type>() 
-                    {typeof(InjectAttribute)},typeof(RegisterAsSingleInstanceAttribute), typeof(RegisterInstanceAttribute), 
-                false, true);
+
+            _serviceLocator = new ServiceLocator(new List<Type>()
+                {typeof(InjectAttribute)}, _container, _instanceProvider);
         }
 
         public T GetInstance<T>()
@@ -56,10 +54,13 @@ namespace GruInject.GruInject.API.TestTools
 
         public void Dispose()
         {
-            _serviceLocator.Dispose();
             _instanceProvider.ClearFakeInstances();
             if (_started)
                 _gruInject.Stop();
+            else
+            {
+                _serviceLocator.Dispose();
+            }
         }
     }
 }

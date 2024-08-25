@@ -22,9 +22,7 @@ namespace GruInject.GruInject.Example
             {
                 return;
             }
-            _gruInject = new global::GruInject.GruInject.API.GruInject(
-                new List<Type>() {typeof(AutoSpawnAttribute)},
-                new List<Type>() {typeof(InjectAttribute)});
+            _gruInject = new API.GruInject();
             _gruInject.Start();//Comment me if comment below is uncommented
             //_gruInject.Start(false, false); //Uncomment me to allow unregistered instances.
             //if you want to track circular dependencies set first parameter in Start to true.

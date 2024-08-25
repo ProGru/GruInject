@@ -9,11 +9,23 @@ namespace GruInject.GruInject.API
     {
         private readonly List<Type> _autoSpawnAttributes;
         private readonly List<Type> _injectAttribute;
+        private readonly Type _registerAsSingleAttribute;
+        private readonly Type _registerInstanceAttribute;
 
         private ServiceLocator _serviceLocator;
 
-        public GruInject(List<Type> autoSpawnAttributes, List<Type> injectAttribute)
+        public GruInject()
         {
+            _registerInstanceAttribute = typeof(RegisterInstanceAttribute);
+            _registerAsSingleAttribute = typeof(RegisterAsSingleInstanceAttribute);
+            _injectAttribute = new List<Type>() {typeof(InjectAttribute)};
+            _autoSpawnAttributes = new List<Type>() {typeof(AutoSpawnAttribute)};
+        }
+        
+        public GruInject(List<Type> autoSpawnAttributes, List<Type> injectAttribute, Type registerAsSingleAttribute, Type registerInstanceAttribute)
+        {
+            _registerInstanceAttribute = registerInstanceAttribute;
+            _registerAsSingleAttribute = registerAsSingleAttribute;
             _injectAttribute = injectAttribute;
             _autoSpawnAttributes = autoSpawnAttributes;
         }
@@ -25,7 +37,7 @@ namespace GruInject.GruInject.API
                 throw new Exception("Service already started");
             }
 
-            _serviceLocator = new ServiceLocator(_injectAttribute, typeof(RegisterAsSingleInstanceAttribute), typeof(RegisterInstanceAttribute), enableCircularDependencyDetection, allowOnlyRegisteredInstances);
+            _serviceLocator = new ServiceLocator(_injectAttribute, _registerAsSingleAttribute, _registerInstanceAttribute, enableCircularDependencyDetection, allowOnlyRegisteredInstances);
             InstanceInitialization.CurrentInstanceInitialization = _serviceLocator;
 
             AttributeCollector attributeCollector = new AttributeCollector();
