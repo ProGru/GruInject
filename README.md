@@ -119,6 +119,8 @@ As you can see we are telling ***GruInjectTestingTool*** that instead of providi
 >It's important to note that it's best to provide all fake instances before Starting ***GruInjectTestingTool***.
 >Starting before providing may result in starting some services with original implementation and the rest with fake - it all depends on the declaration type and moment of instance request.
 
+As for the version of ***GruInjectTestingTool*** without Start, you need to provide Fakes before accessing the instance (No Start is required!).
+
 ### In what order this is happening?
 It all starts with 
 ```C#
