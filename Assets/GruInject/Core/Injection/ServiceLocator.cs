@@ -1,31 +1,46 @@
 ﻿using System;
 using System.Collections.Generic;
 using GruInject.API.Attributes;
-using GruInject.Core.Registration;
+using GruInject.GruInject.Core.Registration;
 
-namespace GruInject.Core.Injection
+namespace GruInject.GruInject.Core.Injection
 {
     public class ServiceLocator : IDisposable, IInstanceInitialization
     {
-        private readonly InstanceProvider _instanceProvider;
+        private readonly IInstanceProvider _instanceProvider;
         private readonly InstanceFiller _instanceFiller;
         private readonly bool _enableCircularDependencyDetection;
         private readonly CircularDependencyDetection _circularDependencyDetection;
         private readonly List<Type> _injectAttributes;
         private readonly ServiceLocator _parentServiceLocator;
         private ServiceLocator _childServiceLocator;
+        private InstanceContainer _instanceContainer;
 
-        public ServiceLocator(List<Type> injectAttributes, bool enableCircularDependencyDetection, bool allowOnlyRegisteredInstances, ServiceLocator parentServiceLocator = null)
+        public ServiceLocator(List<Type> injectAttributes, Type registerAsSingleAttribute, Type registerInstance, bool enableCircularDependencyDetection, bool allowOnlyRegisteredInstances, ServiceLocator parentServiceLocator = null)
         {
             _parentServiceLocator = parentServiceLocator;
             _parentServiceLocator?.LinkAsChild(this);
             _injectAttributes = injectAttributes;
             _enableCircularDependencyDetection = enableCircularDependencyDetection;
-            _instanceFiller = new InstanceFiller(injectAttributes);
-            _instanceProvider =  new InstanceProvider(allowOnlyRegisteredInstances, _instanceFiller);
+
+            _instanceContainer = new InstanceContainer();
+            _instanceProvider =  new InstanceProvider(allowOnlyRegisteredInstances, new InstanceCreator(), _instanceContainer, registerAsSingleAttribute, registerInstance);
+            _instanceFiller = new InstanceFiller(injectAttributes, _instanceProvider);
             _circularDependencyDetection = new CircularDependencyDetection();
         }
-        
+
+        public ServiceLocator(List<Type> injectAttributes, InstanceContainer instanceContainer, IInstanceProvider instanceProvider, ServiceLocator parentServiceLocator = null)
+        {
+            _parentServiceLocator = parentServiceLocator;
+            _parentServiceLocator?.LinkAsChild(this);
+            _injectAttributes = injectAttributes;
+
+            _instanceContainer = instanceContainer;
+            _instanceProvider = instanceProvider;
+            _instanceFiller = new InstanceFiller(injectAttributes, _instanceProvider);
+            _circularDependencyDetection = new CircularDependencyDetection();
+        }
+
         public T GetInstance<T>()
         {
             return (T) GetInstance(typeof(T));
@@ -33,6 +48,7 @@ namespace GruInject.Core.Injection
         
         public object GetInstance(Type type)
         {
+            type = _instanceProvider.GetAssociatedType(type);
             if (_parentServiceLocator != null)
             {
                   var instance = _parentServiceLocator._instanceProvider.CheckInstanceAvailability(type);
@@ -51,13 +67,16 @@ namespace GruInject.Core.Injection
                 }
             }
 
-            return _instanceProvider.Get(type);
+            var createdInstance = _instanceProvider.Get(type);
+            _instanceFiller.FullyFillInstance(type, createdInstance);
+            _instanceContainer.AddInstanceToContainer(type, createdInstance);
+            return createdInstance;
         }
 
         public void InitializeGruInstance(GruMonoBehaviour monoBehaviour)
         {
-            _instanceFiller.FillInstance(monoBehaviour, _instanceProvider.Get);
-            _instanceFiller.InitializeMethods(monoBehaviour,_instanceProvider.Get);
+            _instanceFiller.FillInstance(monoBehaviour);
+            _instanceFiller.InitializeMethods(monoBehaviour);
         }
 
         private void LinkAsChild(ServiceLocator serviceLocator)

@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Linq;
 using System.Reflection;
-using GruInject.Core.Injection;
-using GruInject.Tests.InjectAttributesForTests;
+using GruInject.GruInject.Core.Injection;
+using GruInject.Tests.AttributesForTests;
 using GruInject.Tests.SupportClasses;
 using GruInject.Tests.SupportClasses.TestAttributes;
 using NUnit.Framework;

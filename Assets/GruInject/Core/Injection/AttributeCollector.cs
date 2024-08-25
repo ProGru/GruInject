@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using UnityEngine.UI;
 
-namespace GruInject.Core.Injection
+namespace GruInject.GruInject.Core.Injection
 {
     public class AttributeCollector
     {

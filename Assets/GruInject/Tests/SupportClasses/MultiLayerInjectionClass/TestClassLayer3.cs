@@ -1,9 +1,10 @@
-﻿using GruInject.API.Attributes;
+﻿using GruInject.Tests.AttributesForTests;
+using GruInject.Tests.SupportClasses.Interfaces;
 
 namespace GruInject.Tests.SupportClasses.MultiLayerInjectionClass
 {
-    [RegisterInstance]
-    public class TestClassLayer3
+    [RegisterInstanceForTest]
+    public class TestClassLayer3 : ITestInterfaceLayer3
     {
         
     }

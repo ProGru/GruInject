@@ -1,4 +1,4 @@
-﻿using GruInject.Tests.InjectAttributesForTests;
+﻿using GruInject.Tests.AttributesForTests;
 
 namespace GruInject.Tests.SupportClasses.Ctor
 {

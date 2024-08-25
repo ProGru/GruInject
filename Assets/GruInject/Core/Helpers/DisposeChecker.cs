@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace GruInject.Core.Helpers
+namespace GruInject.GruInject.Core.Helpers
 {
     public class DisposeChecker
     {

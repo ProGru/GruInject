@@ -2,7 +2,7 @@
 using GruInject.API.Attributes;
 using UnityEngine;
 
-namespace GruInject.Example
+namespace GruInject.GruInject.Example
 {
     [RegisterInstance] //this is not as single so each request new instance will be created
     public class ClassSignedForInjection : IDisposable

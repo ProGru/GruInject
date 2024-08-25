@@ -1,10 +1,10 @@
-﻿using GruInject.API.Attributes;
+﻿using GruInject.Tests.AttributesForTests;
 using GruInject.Tests.SupportClasses.MultiLayerInjectionClass;
 using GruInject.Tests.SupportClasses.TestAttributes;
 
 namespace GruInject.Tests.SupportClasses
 {
-    [RegisterInstance]
+    [RegisterInstanceForTest]
     public class ClassWithCustomAttributeForLayerTest
     {
         [FieldAndPropertyAttributeForTests] public TestClassLayer1 testClassLayer1;

@@ -1,11 +1,10 @@
-﻿using System;
-using GruInject.API.Attributes;
+﻿using GruInject.API.Attributes;
 using UnityEngine;
 
-namespace GruInject.Example
+namespace GruInject.GruInject.Example
 {
     [RegisterInstance]
-    public class ThirdClassSignedForInjection : IDisposable
+    public class ThirdClassSignedForInjection : IThirdClassSignedForInjection
     {
         public ThirdClassSignedForInjection()
         {

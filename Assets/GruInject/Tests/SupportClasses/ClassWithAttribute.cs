@@ -1,9 +1,12 @@
-﻿using GruInject.Tests.SupportClasses.TestAttributes;
+﻿using GruInject.Tests.AttributesForTests;
+using GruInject.Tests.SupportClasses.Interfaces;
+using GruInject.Tests.SupportClasses.TestAttributes;
 
 namespace GruInject.Tests.SupportClasses
 {
     [AttributeForTests]
-    public class ClassWithAttribute
+    [RegisterInstanceForTest]
+    public class ClassWithAttribute : IClassWithAttribute
     {
         
     }

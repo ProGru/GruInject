@@ -1,9 +1,10 @@
-﻿using GruInject.API.Attributes;
+﻿using GruInject.Tests.AttributesForTests;
+using GruInject.Tests.SupportClasses.Interfaces;
 
 namespace GruInject.Tests.SupportClasses
 {
-    [RegisterInstance]
-    public class RegisteredInstanceClassForTest
+    [RegisterInstanceForTest]
+    public class RegisteredInstanceClassForTest : IRegisteredInstanceForTest
     {
         
     }

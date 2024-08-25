@@ -1,24 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using GruInject.API.Attributes;
-using GruInject.Core.Injection;
+using GruInject.GruInject.Core.Injection;
 
-namespace GruInject.Core.Registration
+namespace GruInject.GruInject.Core.Registration
 {
-    public class InstanceProvider : IDisposable
+    public class InstanceProvider : IInstanceProvider
     {
-        private readonly InstanceContainer _instanceContainer = new();
+        private InstanceContainer _instanceContainer;
         private readonly AttributeCollector _attributeCollector = new();
         private readonly List<Type> _singleInstanceRuleDefinition = new();
         private readonly List<Type> _registeredInstances = new();
+        private readonly Dictionary<Type, Type> _typeAssociatedInterfaces = new();
         private readonly bool _allowOnlyRegisteredInstances = false;
         private readonly InstanceCreator _instanceCreator;
         
-        public InstanceProvider(bool allowOnlyRegisteredInstances, InstanceFiller instanceFiller)
+        public InstanceProvider(bool allowOnlyRegisteredInstances, InstanceCreator instanceCreator,
+            InstanceContainer instanceContainer, Type registerAsSingleAttribute, Type registerInstanceAttribute)
         {
+            _instanceContainer = instanceContainer;
             _allowOnlyRegisteredInstances = allowOnlyRegisteredInstances;
-            var singleInstances = _attributeCollector.GetClasses(typeof(RegisterAsSingleInstanceAttribute));
+            _instanceCreator = instanceCreator;
+
+            var singleInstances = _attributeCollector.GetClasses(registerAsSingleAttribute);
             foreach (var type in singleInstances)
             {
                 _singleInstanceRuleDefinition.Add(type);
@@ -26,11 +30,11 @@ namespace GruInject.Core.Registration
                 {
                     if (associatedInterface != typeof(IDisposable))
                     {
-                        _singleInstanceRuleDefinition.Add(associatedInterface);
+                        _typeAssociatedInterfaces.Add(associatedInterface, type);
                     }
                 }
             }
-            var registeredInstancesFound = _attributeCollector.GetClasses(typeof(RegisterInstanceAttribute));
+            var registeredInstancesFound = _attributeCollector.GetClasses(registerInstanceAttribute);
             foreach (var type in registeredInstancesFound)
             {
                 _registeredInstances.Add(type);
@@ -38,11 +42,10 @@ namespace GruInject.Core.Registration
                 {
                     if (associatedInterface != typeof(IDisposable))
                     {
-                        _registeredInstances.Add(associatedInterface);
+                        _typeAssociatedInterfaces.Add(associatedInterface, type);
                     }
                 }
             }
-            _instanceCreator = new InstanceCreator(_instanceContainer, instanceFiller);
         }
         
         public object Get(Type type)
@@ -62,6 +65,16 @@ namespace GruInject.Core.Registration
             }
 
             return _instanceCreator.CreateInstance(type);
+        }
+
+        public Type GetAssociatedType(Type type)
+        {
+            if (type.IsInterface)
+            {
+                return _typeAssociatedInterfaces[type];
+            }
+
+            return type;
         }
         
         public object CheckInstanceAvailability(Type type)

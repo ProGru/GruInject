@@ -1,4 +1,4 @@
-﻿using GruInject.Core.Injection;
+﻿using GruInject.GruInject.Core.Injection;
 using GruInject.Tests.SupportClasses.CircularDependency;
 using GruInject.Tests.SupportClasses.CircularDependency.CircularFreeClasses;
 using GruInject.Tests.SupportClasses.TestAttributes;

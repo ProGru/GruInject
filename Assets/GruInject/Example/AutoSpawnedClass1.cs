@@ -2,7 +2,7 @@
 using GruInject.API.Attributes;
 using UnityEngine;
 
-namespace GruInject.Example
+namespace GruInject.GruInject.Example
 {
     [AutoSpawn]
     public class AutoSpawnedClass1 : IDisposable

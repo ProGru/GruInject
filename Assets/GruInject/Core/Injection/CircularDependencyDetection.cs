@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace GruInject.Core.Injection
+namespace GruInject.GruInject.Core.Injection
 {
     public class CircularDependencyDetection
     {

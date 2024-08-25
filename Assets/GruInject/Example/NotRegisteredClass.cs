@@ -1,4 +1,4 @@
-﻿namespace GruInject.Example
+﻿namespace GruInject.GruInject.Example
 {
     public class NotRegisteredClass
     {

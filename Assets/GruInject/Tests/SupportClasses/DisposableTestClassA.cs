@@ -1,9 +1,9 @@
 ﻿using System;
-using GruInject.API.Attributes;
+using GruInject.Tests.AttributesForTests;
 
 namespace GruInject.Tests.SupportClasses
 {
-    [RegisterAsSingleInstance]
+    [RegisterAsSingleInstanceForTest]
     public class DisposableTestClassA : IDisposable
     {
         public int disposeCount;

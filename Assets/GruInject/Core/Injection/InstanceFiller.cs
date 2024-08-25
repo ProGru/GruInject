@@ -2,54 +2,49 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using GruInject.GruInject.Core.Registration;
 
-namespace GruInject.Core.Injection
+namespace GruInject.GruInject.Core.Injection
 {
     public class InstanceFiller : IDisposable
     {
         private readonly AttributeCollector _attributeCollector = new();
         private readonly List<Type> _injectAttributes;
+        private IInstanceProvider _instanceProvider;
 
-        public InstanceFiller(List<Type> injectAttributes)
+        public InstanceFiller(List<Type> injectAttributes, IInstanceProvider instanceProvider)
         {
+            _instanceProvider = instanceProvider;
             _injectAttributes = injectAttributes;
         }
-        
-        public void FillInstance<T>(T instance, Func<Type,object> instanceProvider)
+
+        public void FullyFillInstance<T>(Type type, T instance)
+        {
+            type = _instanceProvider.GetAssociatedType(type);
+            FillInstance(instance);
+            InitializeInstanceCtor(type, instance);
+            InitializeMethods(instance);
+        }
+
+        public void FillInstance<T>(T instance)
         {
             foreach (var attribute in _injectAttributes)
             {
                 var fields = _attributeCollector.GetFields(attribute, instance.GetType());
                 foreach (var fieldInfo in fields)
                 {
-                    fieldInfo.SetValue(instance, instanceProvider(fieldInfo.FieldType));
+                    fieldInfo.SetValue(instance, GetFullyFilledInstance(fieldInfo.FieldType));
                 }
 
                 var properties = _attributeCollector.GetProperties(attribute, instance.GetType());
                 foreach (var propertyInfo in properties)
                 {
-                    propertyInfo.SetValue(instance, instanceProvider(propertyInfo.PropertyType));
+                    propertyInfo.SetValue(instance, GetFullyFilledInstance(propertyInfo.PropertyType));
                 }
             }
         }
 
-        public void InitializeInstanceCtor(Type type, object instance, Func<Type,object> instanceProvider)
-        {
-            var ctor = type.GetConstructors()
-                           .Where(c => c.IsPublic)
-                           .OrderByDescending(c => c.GetParameters().Length)
-                           .FirstOrDefault()
-                       ?? throw new InvalidOperationException($"No suitable constructor found on type '{type}'");
-
-            
-            var injectionServices = ctor.GetParameters()
-                .Select(p => instanceProvider(p.ParameterType))
-                .ToArray();
-            
-            ctor.Invoke(instance, injectionServices);
-        }
-
-        public void InitializeMethods<T>(T instance, Func<Type,object> instanceProvider)
+        public void InitializeMethods<T>(T instance)
         {
             foreach (var attribute in _injectAttributes)
             {
@@ -58,7 +53,7 @@ namespace GruInject.Core.Injection
                 {
                     ParameterInfo[] parameters = methodInfo.GetParameters();
                     var injectionServices = parameters
-                        .Select(p => instanceProvider(p.ParameterType))
+                        .Select(p => GetFullyFilledInstance(p.ParameterType))
                         .ToArray();
                     methodInfo.Invoke(instance, injectionServices);
                 }
@@ -72,12 +67,36 @@ namespace GruInject.Core.Injection
                     {
                         ParameterInfo[] parameters = methodInfo.GetParameters();
                         var injectionServices = parameters
-                            .Select(p => instanceProvider(p.ParameterType))
+                            .Select(p => GetFullyFilledInstance(p.ParameterType))
                             .ToArray();
                         methodInfo.Invoke(instance, injectionServices);
                     }
                 }
             }
+        }
+
+        private object GetFullyFilledInstance(Type type)
+        {
+            type = _instanceProvider.GetAssociatedType(type);
+            var instanceProvided = _instanceProvider.Get(type);
+            FullyFillInstance(type, instanceProvided);
+            return instanceProvided;
+        }
+
+        private void InitializeInstanceCtor(Type type, object instance)
+        {
+            var ctor = type.GetConstructors()
+                           .Where(c => c.IsPublic)
+                           .OrderByDescending(c => c.GetParameters().Length)
+                           .FirstOrDefault()
+                       ?? throw new InvalidOperationException($"No suitable constructor found on type '{type}'");
+
+            
+            var injectionServices = ctor.GetParameters()
+                .Select(p => GetFullyFilledInstance(p.ParameterType))
+                .ToArray();
+            
+            ctor.Invoke(instance, injectionServices);
         }
 
         public void Dispose()

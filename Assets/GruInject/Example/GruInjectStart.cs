@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using GruInject.API.Attributes;
 using UnityEngine;
 
-namespace GruInject.Example
+namespace GruInject.GruInject.Example
 {
     [DefaultExecutionOrder(-999999999)]
     [ExecuteInEditMode]
@@ -22,7 +22,7 @@ namespace GruInject.Example
             {
                 return;
             }
-            _gruInject = new API.GruInject(
+            _gruInject = new global::GruInject.GruInject.API.GruInject(
                 new List<Type>() {typeof(AutoSpawnAttribute)},
                 new List<Type>() {typeof(InjectAttribute)});
             _gruInject.Start();//Comment me if comment below is uncommented

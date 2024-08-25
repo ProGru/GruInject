@@ -1,15 +1,17 @@
-﻿using GruInject.API.Attributes;
-using GruInject.Tests.InjectAttributesForTests;
+﻿using GruInject.Tests.AttributesForTests;
 using GruInject.Tests.SupportClasses.Ctor;
+using GruInject.Tests.SupportClasses.Interfaces;
 
 namespace GruInject.Tests.SupportClasses
 {
-    [RegisterAsSingleInstance]
+    [RegisterAsSingleInstanceForTest]
     public class ClassWithAttributeOnMethods
     {
         public int NoParameterMethodWasCalled= 0;
         public int ParameterMethodWasCalled= 0;
+        public int ParameterMethodWithInterfaceWasCalled= 0;
         public ClassWithAttribute ParameterMethodValue;
+        public IClassWithAttribute ParameterMethodInterfaceValue;
         public int ParameterMethodWithReturnWasCalled= 0;
         public ClassWithAttribute ParameterMethodWithReturnValue;
         public int PrivateMethodWasCalled= 0;
@@ -40,6 +42,13 @@ namespace GruInject.Tests.SupportClasses
         {
             ParameterMethodWasCalled++;
             ParameterMethodValue = value;
+        }
+        
+        [TestInject]
+        public void ParameterMethodWithInterface(IClassWithAttribute value)
+        {
+            ParameterMethodWithInterfaceWasCalled++;
+            ParameterMethodInterfaceValue = value;
         }
 
         [TestInject]

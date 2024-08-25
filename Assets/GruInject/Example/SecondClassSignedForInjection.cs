@@ -2,12 +2,12 @@
 using GruInject.API.Attributes;
 using UnityEngine;
 
-namespace GruInject.Example
+namespace GruInject.GruInject.Example
 {
     [RegisterInstance]
     public class SecondClassSignedForInjection : IDisposable
     {
-        [Inject] public ThirdClassSignedForInjection ThirdClass;
+        [Inject] public IThirdClassSignedForInjection ThirdClass;
 
         public SecondClassSignedForInjection()
         {

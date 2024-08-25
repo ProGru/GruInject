@@ -2,7 +2,7 @@
 using GruInject.API.Attributes;
 using UnityEngine;
 
-namespace GruInject.Example
+namespace GruInject.GruInject.Example
 {
     [AutoSpawn]// This attribute is inheritor of RegisterAsSingleInstanceAttribute so single instance will be spawn
     public class AutoSpawnedClass2 : IDisposable
