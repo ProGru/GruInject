@@ -13,7 +13,7 @@ GruInject is meant to start before all entities that are going to use it.
 For this purpose in the provided example class "GruInjectStart" uses [DefaultExecutionOrder] attribute, and the actual GruInject service starts happening in Awake.
 You can use GruInjectStart to start or come up with your way to ensure that GruInject is started before entities that depend on it.
 ### Injection
-Injection is a way of telling GruInject that he should provide an instance in this place.
+Injection is a way of telling GruInject where an instance should be provided.
 >[!Warning]
 >**[Inject]** can't be used everywhere. 
 >It works only on entities:
@@ -35,20 +35,27 @@ So the easiest way to start is:
 4. Press Play and enjoy your injected instance in the client.
 
 ## Start GruInject details
+The simplest way of starting GruInject is shown below. In this example, GruInject was started with default recommended settings.
 ```C#
-_gruInject = new API.GruInject(
-                new List<Type>() {typeof(AutoSpawnAttribute)},
-                new List<Type>() {typeof(InjectAttribute)});
+__gruInject = new API.GruInject();
 _gruInject.Start();
 ```
-In this example, we are telling GruInject that its attribute for auto spawning is the "AutoSpawnAttribute" class, the attribute for places needed injection is the "InjectAttribute" class and it should Start with default values. \
-As you can see you can declare your own or use more than one attribute for auto-spawn services and injecting purposes. \
-GruInject can be started in two more options:
+There is a way to use custom attributes instead of default ones:
+```C#
+_gruInject = new API.GruInject(
+  new List<Type>() {typeof(AutoSpawnAttribute)},
+  new List<Type>() {typeof(InjectAttribute)},
+  typeof(RegisterAsSingleInstanceAttribute),
+  typeof(RegisterInstanceAttribute));
+_gruInject.Start();
+```
+Start method provides two useful options:
 ```C#
  _gruInject.Start(allowOnlyRegisteredInstances:false);
 ```
 By setting this option to false - we allow GruInject to create instances that were not declared using attributes, it will try to create instances using one of their constructors. \
 This option is rather dangerous as it can lead to instances with default values, eg. when int value is used in the constructor. \
+It's important to note that interfaces will be excluded from auto-create as there is no simple option to determine which implementation to use.
 **This option is true by default**
 ```C#
 _gruInject.Start(enableCircularDependencyDetection:true);
@@ -59,43 +66,71 @@ This option provides a way to find these chains (but it can be costly) \
 **Enable this option only if needed.**
 
 ## How can I use those instances that require Inject in tests?
-Its simple use:
+For simple tests that don't require a full start ***GruInjectTestingTool*** was made.
 ```C#
-GruInjStatic.Get<YourInstance>();
-```
-To get instances and GruInject with initialize it (by creating only required instances)
+private GruInjectTestingTool _gruInjectTestingTool;
 
-In your test TearDown use:
-```C#
-GruInjStatic.Reset();
-```
-It will clear the container. 
+[SetUp]
+public void SetUp()
+{
+    _gruInjectTestingTool = new GruInjectTestingTool();
+}
 
-You can also create and start GruInject if your test requires a full start:
-```C#
-        private API.GruInject _gruInject;
+[Test]
+public void When_InstanceRequested_Then_InstanceIsNotNull()
+{
+    var instance = _gruInjectTestingTool.GetInstance<YourInstance>();
+    Assert.NotNull(instance);
+}
 
-        [SetUp]
-        public void SetUp()
-        {
-            _gruInject = new API.GruInject(
-                new List<Type>() {typeof(AutoSpawnAttribute)},
-                new List<Type>() {typeof(InjectAttribute)});
-            _gruInject.Start();
-        }
+[TearDown]
+public void TearDown()
+{
+    _gruInjectTestingTool.Dispose();
+}
 ```
-then in test use:
-```C#
-var instance = _gruInject.GetInstance<YourInstance>();
-```
-to acquire instance
+As you can see in the given example, in SetUp the "GruInjectTestingTool" was created and in TearDown it was Disposed of - those steps are important to have test independence.
+In the test, you can simply grab an instance by use of "_gruInjectTestingTool.GetInstance<YourInstance>()". The instances provided this way will be initialized but only required services will be started.
 
-In your TearDown use:
+### What if I require a full start of GruInject?
+You can also use ***GruInjectTestingTool*** simply use _gruInjectTestingTool.Start() in SetUp or Test - it will start all services as it would normally do.
+After this, you are ready to grab your instance as you would do with ***GruInjectTestingTool***.
 ```C#
-       [TearDown]
-        public void TearDown()
-        {
-            _gruInject.Stop();
-        }
+[SetUp]
+public void SetUp()
+{
+    _gruInjectTestingTool = new GruInjectTestingTool();
+    _gruInjectTestingTool.Start();
+}
 ```
-to clear container.
+### What about Mocks? Can I use those or a dummy, instead of actual services?
+Sure here is how:
+```C#
+[SetUp]
+public void SetUp()
+{
+    _gruInjectTestingTool = new GruInjectTestingTool();
+    _gruInjectTestingTool.AddFakeInstance<IMyActualClass>(new MyDummy());
+    _gruInjectTestingTool.Start();
+}
+```
+As you can see we are telling ***GruInjectTestingTool*** that instead of providing "IMyActualClass" he should use the provided instance (that must be an implementation of IMyActualClass)
+>[!Warning]
+>It's important to note that it's best to provide all fake instances before Starting ***GruInjectTestingTool***.
+>Starting before providing may result in starting some services with original implementation and the rest with fake - it all depends on the declaration type and moment of instance request.
+
+### In what order this is happening?
+It all starts with 
+```C#
+_gruInject = new API.GruInject();
+_gruInject.Start();
+```
+The start will result in the spawn of ***[AutoSpawn]*** marked services and all services they require to work. \
+All other services will be made when required. 
+
+### In what order insides of the instance are initialized?
+1. Fields and Properties
+2. Constructor
+3. Methods
+4. Methods with attributes on parameters
+
