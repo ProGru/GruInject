@@ -149,7 +149,7 @@ namespace GruInject.Tests.InjectionTests
         {
             ServiceLocator serviceLocator = new(new List<Type>() {typeof(FieldAndPropertyAttributeForTestsAttribute)}, typeof(RegisterAsSingleInstanceForTestAttribute), typeof(RegisterInstanceForTestAttribute),false, false);
             var firstInstanceRequest = serviceLocator.GetInstance<TestClassA>();
-            ServiceLocator secondServiceLocator = new(new List<Type>(){typeof(FieldAndPropertyAttributeForTestsAttribute)}, typeof(RegisterAsSingleInstanceForTestAttribute), typeof(RegisterInstanceForTestAttribute),false, false,serviceLocator);
+            ServiceLocator secondServiceLocator = new(new List<Type>(){typeof(FieldAndPropertyAttributeForTestsAttribute)}, typeof(RegisterAsSingleInstanceForTestAttribute), typeof(RegisterInstanceForTestAttribute),false, false,false, serviceLocator);
             var secondInstanceRequest = secondServiceLocator.GetInstance<TestClassA>();
             var secondInstanceRequestInterface = secondServiceLocator.GetInstance<ITestInterfaceA>();
             
@@ -172,7 +172,7 @@ namespace GruInject.Tests.InjectionTests
         {
             ServiceLocator serviceLocator = new(new List<Type>() {typeof(FieldAndPropertyAttributeForTestsAttribute)}, typeof(RegisterAsSingleInstanceForTestAttribute), typeof(RegisterInstanceForTestAttribute),false, false);
             var firstInstanceRequest = serviceLocator.GetInstance<DisposableTestClassA>();
-            ServiceLocator secondServiceLocator = new(new List<Type>(){typeof(FieldAndPropertyAttributeForTestsAttribute)}, typeof(RegisterAsSingleInstanceForTestAttribute), typeof(RegisterInstanceForTestAttribute),false, false, serviceLocator);
+            ServiceLocator secondServiceLocator = new(new List<Type>(){typeof(FieldAndPropertyAttributeForTestsAttribute)}, typeof(RegisterAsSingleInstanceForTestAttribute), typeof(RegisterInstanceForTestAttribute),false, false, false, serviceLocator);
             var secondInstanceRequest = secondServiceLocator.GetInstance<DisposableTestClassB>();
             serviceLocator.Dispose();
             

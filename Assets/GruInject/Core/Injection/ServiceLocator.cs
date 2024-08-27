@@ -13,17 +13,17 @@ namespace GruInject.GruInject.Core.Injection
         private readonly CircularDependencyDetection _circularDependencyDetection;
         private readonly List<Type> _injectAttributes;
         private readonly ServiceLocator _parentServiceLocator;
+        private readonly InstanceContainer _instanceContainer;
         private ServiceLocator _childServiceLocator;
-        private InstanceContainer _instanceContainer;
 
-        public ServiceLocator(List<Type> injectAttributes, Type registerAsSingleAttribute, Type registerInstance, bool enableCircularDependencyDetection, bool allowOnlyRegisteredInstances, ServiceLocator parentServiceLocator = null)
+        public ServiceLocator(List<Type> injectAttributes, Type registerAsSingleAttribute, Type registerInstance, bool enableCircularDependencyDetection, bool allowOnlyRegisteredInstances, bool suppressDisposeWarnings = false, ServiceLocator parentServiceLocator = null)
         {
             _parentServiceLocator = parentServiceLocator;
             _parentServiceLocator?.LinkAsChild(this);
             _injectAttributes = injectAttributes;
             _enableCircularDependencyDetection = enableCircularDependencyDetection;
 
-            _instanceContainer = new InstanceContainer();
+            _instanceContainer = new InstanceContainer(suppressDisposeWarnings);
             _instanceProvider =  new InstanceProvider(allowOnlyRegisteredInstances, new InstanceCreator(), _instanceContainer, registerAsSingleAttribute, registerInstance);
             _instanceFiller = new InstanceFiller(injectAttributes, _instanceProvider);
             _circularDependencyDetection = new CircularDependencyDetection();

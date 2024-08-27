@@ -8,7 +8,13 @@ namespace GruInject.GruInject.Core.Registration
     public class InstanceContainer : IDisposable
     {
         public Dictionary<Type, List<object>> InitializedInstances = new();
-        
+        private readonly bool _suppressDisposeWarnings;
+
+        public InstanceContainer(bool suppressDisposeWarnings = false)
+        {
+            _suppressDisposeWarnings = suppressDisposeWarnings;
+        }
+
         public void AddInstanceToContainer(Type type, object instance)
         {
             if (InitializedInstances.TryGetValue(type, out List<object> litOfInstances))
@@ -46,13 +52,15 @@ namespace GruInject.GruInject.Core.Registration
                             element.Dispose();
                         else
                         {
-                            Debug.LogWarning($"Found not disposed instance while closing GruInj of type: {instance.Key}");
+                            if(!_suppressDisposeWarnings)
+                                Debug.LogWarning($"Found not disposed instance while closing GruInj of type: {instance.Key}");
                         }
                     }
                 }
                 else
                 {
-                    Debug.LogWarning($"Type {instance.Key} don't implement IDisposable - It lends to memory leak. Found {instance.Value.Count} instances not Disposed.");
+                    if (!_suppressDisposeWarnings)
+                        Debug.LogWarning($"Type {instance.Key} don't implement IDisposable - It lends to memory leak. Found {instance.Value.Count} instances not Disposed.");
                 }
             }
 

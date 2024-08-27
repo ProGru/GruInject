@@ -30,14 +30,14 @@ namespace GruInject.GruInject.API
             _autoSpawnAttributes = autoSpawnAttributes;
         }
 
-        public void Start(bool enableCircularDependencyDetection = false, bool allowOnlyRegisteredInstances = true)
+        public void Start(bool enableCircularDependencyDetection = false, bool allowOnlyRegisteredInstances = true, bool suppressDisposeWarnings = false)
         {
             if (_serviceLocator != null)
             {
                 throw new Exception("Service already started");
             }
 
-            _serviceLocator = new ServiceLocator(_injectAttribute, _registerAsSingleAttribute, _registerInstanceAttribute, enableCircularDependencyDetection, allowOnlyRegisteredInstances);
+            _serviceLocator = new ServiceLocator(_injectAttribute, _registerAsSingleAttribute, _registerInstanceAttribute, enableCircularDependencyDetection, allowOnlyRegisteredInstances, suppressDisposeWarnings);
             InstanceInitialization.CurrentInstanceInitialization = _serviceLocator;
 
             AttributeCollector attributeCollector = new AttributeCollector();
